@@ -1,7 +1,50 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+include('database.php');
+// include('update-script.php');
+if(isset($_POST['update'])){
+  $id = $_POST['id'];
+  $full_name = $connection->escape_string($_POST['full_name']);
+  $email_address = $connection->escape_string($_POST['email_address']);
+  $city = $connection->escape_string($_POST['city']);
+  $country = $connection->escape_string($_POST['country']);
+  
+      //insert into table
+      if(isset($_GET['id'])){
+        $query="UPDATE user_details SET full_name='$full_name',email_address='$email_address',city= '$city',country='$country' WHERE id=$id" ;
+      }
+      // else{
+      //   $query="UPDATE user_details SET full_name='$full_name',email_address='$email_address',city= '$city',country='$country' WHERE id=$id" ;
+      // }
+      $connection->query($query);
+      if($connection->affected_rows){
+          $_SESSION['m'] = "Product Updated Successfully";
+      }
+      else{
+          $_SESSION['m'] = "ERROR!! Updating Product. Contact Admin";
+      }    
+      $query->close();    
+      header("location:user-table.phpp?id=" . $id);
+}
+if(isset($_GET['id'])){
+  
+  $id = $_GET['id'];
+  // echo "you wabt to edit $id";
+  $query="UPDATE user_details SET full_name='$full_name',email_address='$email_address',city= '$city',country='$country' WHERE id=$id" ;
 
-include('update-script.php');
+  $result = $connection->query($query);
+  if($result->num_rows){
+    $editData = $result->fetch_assoc();   
+  }
+  else{
+      die("No results found");
+      exit();
+  }
+}
 ?>
+
 
 
 <!DOCTYPE html>

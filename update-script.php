@@ -21,7 +21,9 @@ function edit_data($connection, $id)
  $query= "SELECT * FROM user_details WHERE id= $id";
  $exec = mysqli_query($connection, $query);
  $row= mysqli_fecth_assoc($exec);
+ var_dump($row);
  return $row;
+ exit;
 }
 
 // update data query
@@ -32,11 +34,7 @@ function update_data($connection, $id){
       $city = legal_input($_POST['city']);
       $country = legal_input($_POST['country']);
 
-      $query="UPDATE user_details 
-            SET full_name='$full_name',
-                email_address='$email_address',
-                city= '$city',
-                country='$country' WHERE id=$id";
+      $query="UPDATE user_details SET full_name='$full_name',email_address='$email_address',city= '$city',country='$country' WHERE id=$id";
 
       $exec= mysqli_query($connection,$query);
   
